@@ -25,7 +25,7 @@ class _LinkListState extends State<LinkList> {
 
   @override
   Widget build(BuildContext context) {
-    UrlModel products = Provider.of<UrlModel>(context);
+    //UrlModel products = Provider.of<UrlModel>(context);
     return Consumer<UrlModel>(builder: (context, textmodel, child) {
       return Scaffold(
         body: SafeArea(
@@ -41,6 +41,8 @@ class _LinkListState extends State<LinkList> {
                             return Card(
                               child: ListTile(
                                 title: Text(textmodel.linklist[index].url),
+                                subtitle:
+                                    Text(textmodel.linklist[index].urlshort),
                                 trailing: IconButton(
                                   icon: Icon(Icons.delete),
                                   onPressed: () {

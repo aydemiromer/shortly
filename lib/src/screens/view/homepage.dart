@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +9,29 @@ import 'package:shortly/src/utils/extensions/context_extension.dart';
 
 import 'link_list_page.dart';
 
-class ShortlyHomePage extends StatelessWidget {
+class ShortlyHomePage extends StatefulWidget {
+  @override
+  _ShortlyHomePageState createState() => _ShortlyHomePageState();
+}
+
+class _ShortlyHomePageState extends State<ShortlyHomePage> {
   @override
   Widget build(BuildContext context) {
+    var _shortenedUrl = "";
+    bool isShorteningUrl = false;
+    List urls = [];
+
+    Future<String> getShortly(String url) async {
+      Dio dio = Dio();
+      var response =
+          await dio.get("https://api.shrtco.de/v2/shorten?url=" + url);
+      print(response);
+      if (response.statusCode != 201) {
+        return Future.error("Failed to shorten the link!");
+      }
+      return response.data["result"]["full_short_link"];
+    }
+
     final TextEditingController urlController = TextEditingController();
 
     UrlModel products = Provider.of<UrlModel>(context);
@@ -73,16 +94,41 @@ class ShortlyHomePage extends StatelessWidget {
                                 ),
                                 obscureText: false,
                               ),
-                              ElevatedButton(
-                                  onPressed: () {
-                                    products.addUrl(
-                                        Shortly(url: urlController.text));
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                            builder: (context) => LinkList()));
-                                  },
-                                  child:
-                                      Text(ShortlyTextConstants.homepagebutton))
+                              !isShorteningUrl
+                                  ? ElevatedButton(
+                                      onPressed: () async {
+                                        setState(() {
+                                          isShorteningUrl = true;
+                                        });
+                                        var inputUrl = urlController.text;
+                                        print(inputUrl);
+                                        try {
+                                          var shortenedUrl =
+                                              await getShortly(inputUrl);
+                                          setState(() {
+                                            _shortenedUrl = shortenedUrl;
+                                            isShorteningUrl = false;
+                                          });
+                                        } catch (e) {
+                                          setState(() {
+                                            isShorteningUrl = false;
+                                          });
+                                        }
+                                        products.addUrl(Shortly(
+                                            url: urlController.text,
+                                            urlshort: _shortenedUrl));
+
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (context) => LinkList(),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                          ShortlyTextConstants.homepagebutton))
+                                  : CircularProgressIndicator(
+                                      color: Colors.indigo,
+                                    )
                             ],
                           ),
                         ],

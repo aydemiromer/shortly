@@ -26,5 +26,6 @@ class UrlModel extends ChangeNotifier {
 
 class Shortly {
   String url;
-  Shortly({this.url});
+  String urlshort;
+  Shortly({this.url, this.urlshort});
 }
