@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:share/share.dart';
 import 'package:shortly/src/model/provider_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LinkList extends StatefulWidget {
   @override
@@ -10,6 +12,10 @@ class LinkList extends StatefulWidget {
 
 class _LinkListState extends State<LinkList> {
   List urls = [];
+  _shareUrl(String url) {
+    Clipboard.setData(ClipboardData(text: url));
+    Share.share(url);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,17 +33,29 @@ class _LinkListState extends State<LinkList> {
                           itemCount: textmodel.linklist.length,
                           itemBuilder: (context, index) {
                             return Card(
-                              child: ListTile(
-                                title: Text(textmodel.linklist[index].url),
-                                subtitle:
-                                    Text(textmodel.linklist[index].urlshort),
-                                trailing: IconButton(
-                                  icon: Icon(Icons.delete),
-                                  onPressed: () {
-                                    textmodel
-                                        .deleteUrl(textmodel.linklist[index]);
-                                  },
-                                ),
+                              child: Column(
+                                children: [
+                                  Text(textmodel.linklist[index].url),
+                                  Text(textmodel.linklist[index].urlshort),
+                                  Row(
+                                    children: [
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () {
+                                          textmodel.deleteUrl(
+                                              textmodel.linklist[index]);
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.copy),
+                                        onPressed: () {
+                                          _shareUrl(textmodel
+                                              .linklist[index].urlshort);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             );
                           }),
