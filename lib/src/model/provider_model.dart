@@ -14,8 +14,17 @@ class UrlModel extends ChangeNotifier {
     _urls.remove(shortly);
     notifyListeners();
   }
+
+  int get count {
+    return _urls.length;
+  }
+
+  List<Shortly> get linklist {
+    return _urls;
+  }
 }
 
 class Shortly {
   String url;
+  Shortly({this.url});
 }

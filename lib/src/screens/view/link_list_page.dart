@@ -33,24 +33,24 @@ class _LinkListState extends State<LinkList> {
             child: Column(
               children: [
                 Expanded(
-                  child: ListView.builder(
-                    itemCount: products.allProducts.length,
-                    itemBuilder: (context, index) {
-                      return Card(
-                        child: Row(
-                          children: [
-                            Text(products.allProducts[index].url),
-                            IconButton(
-                              icon: Icon(Icons.delete),
-                              onPressed: () {
-                                products.deleteUrl(products.allProducts[index]);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                  child: textmodel.linklist.length == 0
+                      ? Text("Your shopping cart is empty")
+                      : ListView.builder(
+                          itemCount: textmodel.linklist.length,
+                          itemBuilder: (context, index) {
+                            return Card(
+                              child: ListTile(
+                                title: Text(textmodel.linklist[index].url),
+                                trailing: IconButton(
+                                  icon: Icon(Icons.delete),
+                                  onPressed: () {
+                                    textmodel
+                                        .deleteUrl(textmodel.linklist[index]);
+                                  },
+                                ),
+                              ),
+                            );
+                          }),
                 ),
               ],
             ),
