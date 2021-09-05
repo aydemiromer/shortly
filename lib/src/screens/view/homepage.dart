@@ -3,8 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shortly/src/config/constants/image_constants.dart';
 import 'package:shortly/src/config/constants/text_constants.dart';
-import 'package:shortly/src/config/constants/definitions.dart';
-import 'package:shortly/src/model/api_service.dart';
+import 'package:shortly/src/service/api_service.dart';
 import 'package:shortly/src/model/provider_model.dart';
 import 'package:shortly/src/utils/extensions/context_extension.dart';
 

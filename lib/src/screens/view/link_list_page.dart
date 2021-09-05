@@ -8,7 +8,7 @@ import 'package:shortly/src/config/constants/image_constants.dart';
 import 'package:shortly/src/config/constants/text_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shortly/src/utils/extensions/context_extension.dart';
-import 'package:shortly/src/model/api_service.dart';
+import 'package:shortly/src/service/api_service.dart';
 
 class LinkList extends StatefulWidget {
   @override
@@ -22,6 +22,11 @@ class _LinkListState extends State<LinkList> {
   _shareUrl(String url) {
     Clipboard.setData(ClipboardData(text: url));
     Share.share(url);
+  }
+
+  saveToSharedPreferences(String shortenedUrl) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("lastUrl", shortenedUrl);
   }
 
   @override
@@ -138,6 +143,8 @@ class _LinkListState extends State<LinkList> {
                                       try {
                                         var shortenedUrl =
                                             await getShortly(inputUrl);
+                                        await saveToSharedPreferences(
+                                            shortenedUrl);
                                         setState(() {
                                           _shortenedUrl = shortenedUrl;
                                           isShorteningUrl = false;
@@ -150,12 +157,6 @@ class _LinkListState extends State<LinkList> {
                                       products.addUrl(Shortly(
                                           url: urlController.text,
                                           urlshort: _shortenedUrl));
-
-                                      Navigator.of(context).push(
-                                        MaterialPageRoute(
-                                          builder: (context) => LinkList(),
-                                        ),
-                                      );
                                     },
                                     child: Text(
                                         ShortlyTextConstants.homepagebutton),
