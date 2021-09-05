@@ -19,7 +19,6 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
   Widget build(BuildContext context) {
     var _shortenedUrl = "";
     bool isShorteningUrl = false;
-    List urls = [];
 
     Future<String> getShortly(String url) async {
       Dio dio = Dio();
@@ -97,11 +96,7 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
                               !isShorteningUrl
                                   ? ElevatedButton(
                                       onPressed: () async {
-                                        setState(() {
-                                          isShorteningUrl = true;
-                                        });
                                         var inputUrl = urlController.text;
-                                        print(inputUrl);
                                         try {
                                           var shortenedUrl =
                                               await getShortly(inputUrl);

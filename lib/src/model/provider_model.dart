@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 
 class UrlModel extends ChangeNotifier {
   List<Shortly> _urls = [];
+  bool isShorteningUrl = false;
 
   List<Shortly> get allProducts => _urls;
 
   void addUrl(Shortly shortly) {
     _urls.add(shortly);
+    notifyListeners();
+  }
+
+  void changePosition(Shortly shortly) {
+    isShorteningUrl = true;
     notifyListeners();
   }
 
