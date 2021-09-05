@@ -1,9 +1,10 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:shortly/src/config/constants/image_constants.dart';
 import 'package:shortly/src/config/constants/text_constants.dart';
+import 'package:shortly/src/config/constants/definitions.dart';
+import 'package:shortly/src/model/api_service.dart';
 import 'package:shortly/src/model/provider_model.dart';
 import 'package:shortly/src/utils/extensions/context_extension.dart';
 
@@ -20,19 +21,7 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
     var _shortenedUrl = "";
     bool isShorteningUrl = false;
 
-    Future<String> getShortly(String url) async {
-      Dio dio = Dio();
-      var response =
-          await dio.get("https://api.shrtco.de/v2/shorten?url=" + url);
-      print(response);
-      if (response.statusCode != 201) {
-        return Future.error("Failed to shorten the link!");
-      }
-      return response.data["result"]["full_short_link"];
-    }
-
     final TextEditingController urlController = TextEditingController();
-
     UrlModel products = Provider.of<UrlModel>(context);
 
     final imageConstants = ImageConstants();
@@ -73,6 +62,7 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
                     Container(
                       color: Colors.purple[300],
                       height: context.dynamicHeight(0.20),
+                      width: context.dynamicWidth(1),
                       child: Stack(
                         children: [
                           Positioned(
@@ -81,54 +71,68 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
                             child: SvgPicture.asset(
                                 imageConstants.decorationStack),
                           ),
-                          Column(
-                            children: [
-                              TextField(
-                                controller: urlController,
-                                decoration: InputDecoration(
-                                  hintText: "Shorten a link here ...",
-                                  border: InputBorder.none,
-                                  fillColor: Colors.white,
-                                  filled: true,
+                          Positioned(
+                            top: 20,
+                            bottom: 20,
+                            left: 20,
+                            right: 20,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedBox(
+                                  width: 300,
+                                  child: TextField(
+                                    controller: urlController,
+                                    decoration: InputDecoration(
+                                      hintText: "Shorten a link here ...",
+                                      border: InputBorder.none,
+                                      fillColor: Colors.white,
+                                      filled: true,
+                                    ),
+                                    obscureText: false,
+                                  ),
                                 ),
-                                obscureText: false,
-                              ),
-                              !isShorteningUrl
-                                  ? ElevatedButton(
-                                      onPressed: () async {
-                                        var inputUrl = urlController.text;
-                                        try {
-                                          var shortenedUrl =
-                                              await getShortly(inputUrl);
-                                          setState(() {
-                                            _shortenedUrl = shortenedUrl;
-                                            isShorteningUrl = false;
-                                          });
-                                        } catch (e) {
-                                          setState(() {
-                                            isShorteningUrl = false;
-                                          });
-                                        }
-                                        products.addUrl(Shortly(
-                                            url: urlController.text,
-                                            urlshort: _shortenedUrl));
+                                !isShorteningUrl
+                                    ? ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.teal),
+                                        onPressed: () async {
+                                          var inputUrl = urlController.text;
+                                          try {
+                                            var shortenedUrl =
+                                                await getShortly(inputUrl);
+                                            setState(() {
+                                              _shortenedUrl = shortenedUrl;
+                                              isShorteningUrl = false;
+                                            });
+                                          } catch (e) {
+                                            setState(() {
+                                              isShorteningUrl = false;
+                                            });
+                                          }
+                                          products.addUrl(Shortly(
+                                              url: urlController.text,
+                                              urlshort: _shortenedUrl));
 
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (context) => LinkList(),
-                                          ),
-                                        );
-                                      },
-                                      child: Text(
-                                          ShortlyTextConstants.homepagebutton))
-                                  : CircularProgressIndicator(
-                                      color: Colors.indigo,
-                                    )
-                            ],
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                              builder: (context) => LinkList(),
+                                            ),
+                                          );
+                                        },
+                                        child: Text(ShortlyTextConstants
+                                            .homepagebutton),
+                                      )
+                                    : CircularProgressIndicator(
+                                        color: Colors.indigo,
+                                      )
+                              ],
+                            ),
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 )),
               ],
