@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-import 'package:shortly/src/model/provider_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shortly/src/utils/extensions/context_extension.dart';
-import 'package:shortly/src/utils/widgets/stack.dart';
+
+import '../../model/provider_model.dart';
+import '../../utils/extensions/context_extension.dart';
+import '../../utils/widgets/stack.dart';
 
 class LinkList extends StatefulWidget {
   @override
@@ -18,11 +18,6 @@ class _LinkListState extends State<LinkList> {
   _shareUrl(String url) {
     Clipboard.setData(ClipboardData(text: url));
     Share.share(url);
-  }
-
-  saveToSharedPreferences(String shortenedUrl) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString("lastUrl", shortenedUrl);
   }
 
   @override
