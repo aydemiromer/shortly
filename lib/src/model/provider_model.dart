@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class UrlModel extends ChangeNotifier {
   List<Shortly> _urls = [];
@@ -22,12 +21,23 @@ class UrlModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get count {
-    return _urls.length;
-  }
-
   List<Shortly> get linklist {
     return _urls;
+  }
+
+/*
+  Color isButtonColor = Colors.indigo;
+  getButtonColor() => this.isButtonColor;
+  void changeButtonColor(isButtonColor) {
+    this.isButtonColor = Colors.teal;
+    notifyListeners();
+  }*/
+
+  bool isDarkMode = false;
+  getDarkMode() => this.isDarkMode;
+  void changeDarkMode(isDarkMode) {
+    this.isDarkMode = isDarkMode;
+    notifyListeners();
   }
 }
 
