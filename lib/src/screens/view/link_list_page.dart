@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:share/share.dart';
-
 import '../../model/provider_model.dart';
 import '../../utils/extensions/context_extension.dart';
 import '../../utils/widgets/stack.dart';
