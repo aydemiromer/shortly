@@ -82,7 +82,7 @@ class _ShortlyHomePageState extends State<ShortlyHomePage> {
               onChanged: (value) {
                 products.changeDarkMode(value);
               }),
-        )
+        ),
       ],
     );
   }
