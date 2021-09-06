@@ -43,7 +43,7 @@ class _LinkListState extends State<LinkList> {
               children: [
                 Expanded(
                   child: textmodel.linklist.length == 0
-                      ? Text("Your shopping cart is empty")
+                      ? Text("Your card is empty")
                       : ListView.builder(
                           itemCount: textmodel.linklist.length,
                           itemBuilder: (context, index) {
@@ -109,7 +109,7 @@ class _LinkListState extends State<LinkList> {
                     children: [
                       Positioned(
                         right: 0,
-                        bottom: 20,
+                        top: 0,
                         child: SvgPicture.asset(imageConstants.decorationStack),
                       ),
                       Positioned(
@@ -124,6 +124,7 @@ class _LinkListState extends State<LinkList> {
                             SizedBox(
                               width: 300,
                               child: TextField(
+                                style: TextStyle(color: Colors.black),
                                 controller: urlController,
                                 decoration: InputDecoration(
                                   hintText: "Shorten a link here ...",

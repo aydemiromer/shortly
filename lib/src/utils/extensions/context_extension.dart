@@ -11,5 +11,5 @@ extension PaddingExtension on BuildContext {
   EdgeInsets get paddingSymetric =>
       EdgeInsets.symmetric(vertical: 20, horizontal: 20);
 
-  EdgeInsets get paddingTop => EdgeInsets.fromLTRB(0, 30, 0, 0);
+  EdgeInsets get paddingTop => EdgeInsets.fromLTRB(0, 20, 0, 0);
 }
