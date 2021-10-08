@@ -24,8 +24,7 @@ $ pub get
 
 While creating the application, I first made the design screens, then I created the textfromfield field of the application with the stack structure. After this stage, I created a model structure with provider, saved the data in the provider list and displayed it on the second screen. Then, I made the application work by posting with the dio service. Additionally I added theme switcher to the app and app icon.
 
-what i can't create in the app
- => I wanted to save the data I extracted with the shared preferences structure for the application with the heart button and transfer it to another list, but I could not register to the list. Apart from this, the color of the button does not change when pressed, the codes are written, but it is not active in the application, similarly, the validate does not work for the textfromfield, I do not understand why they do not work. In addition, according to some situations, it may take a long time for the data screen to appear and the response from the API.
+
 
 # Application ScreenShoots
   <table>
